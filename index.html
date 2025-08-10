@@ -1,32 +1,25 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8" />
-  <title>Bulut Deposu - Anahtarlı API Entegrasyonu</title>
-</head>
-<body>
-  <h1>Bulut Deposu</h1>
-  <button id="fetchBtn">Verileri Getir</button>
-  <pre id="output" style="white-space: pre-wrap; background:#f0f0f0; padding:10px; border:1px solid #ccc;"></pre>
+<button id="fetchBtn">Verileri Getir</button>
+<pre id="output"></pre>
 
-  <script>
-    const API_URL = 'https://bulut-depo.tsadik04.workers.dev'  // Kendi Worker URL'n ile değiştir
-    const API_KEY = 'Ko6MC4Pv6E3-0nD88LZm43VbdWw5DNOcidwd_R8j'  // Worker.js'de belirlediğin anahtar ile aynı olmalı
+<script>
+  const API_URL = 'https://bulut-depo.tsadik04.workers.dev'
+  const API_KEY = 'Ko6MC4Pv6E3-0nD88LZm43VbdWw5DNOcidwd_R8j'
 
-    document.getElementById('fetchBtn').addEventListener('click', async () => {
-      const output = document.getElementById('output')
-      output.textContent = 'Yükleniyor...'
-      try {
-        const res = await fetch(API_URL, {
-          headers: { 'x-api-key': API_KEY }
-        })
-        if (!res.ok) throw new Error('Hata: ' + res.status)
-        const data = await res.json()
-        output.textContent = JSON.stringify(data, null, 2)
-      } catch (err) {
-        output.textContent = 'Hata: ' + err.message
-      }
-    })
-  </script>
-</body>
-</html>
+  document.getElementById('fetchBtn').addEventListener('click', async () => {
+    const output = document.getElementById('output')
+    output.textContent = 'Yükleniyor...'
+
+    try {
+      const res = await fetch(API_URL, {
+        headers: {
+          'x-api-key': API_KEY
+        }
+      })
+      if (!res.ok) throw new Error('Sunucudan hata: ' + res.status)
+      const data = await res.json()
+      output.textContent = JSON.stringify(data, null, 2)
+    } catch (error) {
+      output.textContent = 'Hata: ' + error.message
+    }
+  })
+</script>
