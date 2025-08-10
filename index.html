@@ -1,25 +1,47 @@
-<button id="fetchBtn">Verileri Getir</button>
-<pre id="output"></pre>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bulut Deposu</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #output { white-space: pre-wrap; background: #f0f0f0; padding: 10px; border-radius: 5px; }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
 
-<script>
-  const API_URL = 'https://bulut-depo.tsadik04.workers.dev'
-  const API_KEY = 'Ko6MC4Pv6E3-0nD88LZm43VbdWw5DNOcidwd_R8j'
+  <h1>Bulut Deposu</h1>
+  <button id="fetchBtn">Verileri Getir</button>
+  <pre id="output">Veriler burada görünecek...</pre>
 
-  document.getElementById('fetchBtn').addEventListener('click', async () => {
-    const output = document.getElementById('output')
-    output.textContent = 'Yükleniyor...'
+  <script>
+    const API_URL = 'https://bulut-depo.tsadik04.workers.dev';
+    const API_KEY = 'Ko6MC4Pv6E3-0nD88LZm43VbdWw5DNOcidwd_R8j';
 
-    try {
-      const res = await fetch(API_URL, {
-        headers: {
-          'x-api-key': API_KEY
+    document.getElementById('fetchBtn').addEventListener('click', async () => {
+      const output = document.getElementById('output');
+      output.textContent = 'Yükleniyor...';
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'GET',
+          headers: {
+            'x-api-key': API_KEY
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Sunucu hatası: ${response.status}`);
         }
-      })
-      if (!res.ok) throw new Error('Sunucudan hata: ' + res.status)
-      const data = await res.json()
-      output.textContent = JSON.stringify(data, null, 2)
-    } catch (error) {
-      output.textContent = 'Hata: ' + error.message
-    }
-  })
-</script>
+
+        const data = await response.json();
+        output.textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        output.textContent = `Hata: ${error.message}`;
+      }
+    });
+  </script>
+
+</body>
+</html>
